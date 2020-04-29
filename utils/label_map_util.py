@@ -209,7 +209,7 @@ def create_categories_from_labelmap(label_map_path, use_display_name=True):
       categories: a list of dictionaries representing all possible categories.
     """
     label_map = load_labelmap(label_map_path)
-    max_num_classes = max(item.id for item in label_map.item)
+    max_num_classes = get_max_label_map_index(label_map)
     return convert_label_map_to_categories(label_map, max_num_classes,
                                            use_display_name)
 
