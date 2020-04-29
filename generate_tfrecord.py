@@ -33,11 +33,11 @@ def class_text_to_int(row_label):
     else:
         return 0
 
+
 def split(df, group):
     data = namedtuple('data', ['filename', 'object'])
     gb = df.groupby(group)
     return [data(filename, gb.get_group(x)) for filename, x in zip(gb.groups.keys(), gb.groups)]
-
 
 
 def create_tf_example(group, path):
@@ -45,7 +45,7 @@ def create_tf_example(group, path):
         encoded_jpg = fid.read()
 
     encoded_jpg_io = io.BytesIO(encoded_jpg)
-    
+
     image = Image.open(encoded_jpg_io)
     width, height = image.size
 
@@ -99,4 +99,3 @@ def main(_):
 
 if __name__ == '__main__':
     tf.app.run()
-

@@ -21,7 +21,7 @@ width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)  # float
 height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)  # float
 fourcc = cv2.VideoWriter_fourcc(*"XVID")
 out = cv2.VideoWriter('output.avi', fourcc, 20.0, (int(width), int(height)))
-mirror=False
+mirror = False
 
 # What model to download.
 MODEL_NAME = 'Apple'
@@ -33,7 +33,7 @@ PATH_TO_CKPT = 'frozen_inference_graph.pb'
 PATH_TO_LABELS = 'object-detection.pbtxt'
 
 # Number of classes, Change your number of classes according to your own requirement.
-NUM_CLASSES = 1 
+NUM_CLASSES = 1
 
 # Load a (frozen) Tensorflow model into memory.
 detection_graph = tf.Graph()
@@ -43,7 +43,6 @@ with detection_graph.as_default():
         serialized_graph = fid.read()
         od_graph_def.ParseFromString(serialized_graph)
         tf.import_graph_def(od_graph_def, name='')
-
 
 # Loading label map
 # Label maps map indices to category names, so that when our convolution network predicts `5`, we know that this corresponds to `airplane`.  Here we use internal utility functions, but anything that returns a dictionary mapping integers to appropriate string labels would be fine
@@ -67,7 +66,6 @@ with detection_graph.as_default():
 
             # Read frame from camera
             ret, image_np = cap.read()
-
 
             # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
             image_np_expanded = np.expand_dims(image_np, axis=0)
@@ -106,5 +104,3 @@ with detection_graph.as_default():
             if cv2.waitKey(25) & 0xFF == ord('q'):
                 cv2.destroyAllWindows()
                 break
-
-            
