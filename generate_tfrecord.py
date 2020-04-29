@@ -17,21 +17,15 @@ import tensorflow as tf
 
 from PIL import Image
 from object_detection.utils import dataset_util
+from object_detection.utils import label_map_util
 from collections import namedtuple, OrderedDict
 
 flags = tf.app.flags
 flags.DEFINE_string('csv_input', '', 'Path to the CSV input')
 flags.DEFINE_string('output_path', '', 'Path to output TFRecord')
 flags.DEFINE_string('image_dir', '', 'Path to images')
+flags.DEFINE_string('label_map', '', 'Path to label_map.pbtxt')
 FLAGS = flags.FLAGS
-
-
-# TO-DO replace this with label map
-def class_text_to_int(row_label):
-    if row_label == 'apple':
-        return 1
-    else:
-        return 0
 
 
 def split(df, group):
@@ -57,14 +51,14 @@ def create_tf_example(group, path):
     ymaxs = []
     classes_text = []
     classes = []
-
+    label_map_dict = label_map_util.get_label_map_dict(FLAGS.label_map)
     for index, row in group.object.iterrows():
         xmins.append(row['xmin'] / width)
         xmaxs.append(row['xmax'] / width)
         ymins.append(row['ymin'] / height)
         ymaxs.append(row['ymax'] / height)
         classes_text.append(row['class'].encode('utf8'))
-        classes.append(class_text_to_int(row['class']))
+        classes.append(label_map_dict(row['class']))
 
     tf_example = tf.train.Example(features=tf.train.Features(feature={
         'image/height': dataset_util.int64_feature(height),
