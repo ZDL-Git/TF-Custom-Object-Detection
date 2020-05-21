@@ -30,7 +30,7 @@ MODEL_NAME = 'Apple'
 PATH_TO_CKPT = 'frozen_inference_graph.pb'
 
 # List of the strings that is used to add correct label for each box.
-PATH_TO_LABELS = 'object-detection.pbtxt'
+PATH_TO_LABELS = 'label_map.pbtxt'
 
 # Number of classes, Change your number of classes according to your own requirement.
 NUM_CLASSES = 1

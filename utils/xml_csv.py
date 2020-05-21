@@ -1,3 +1,4 @@
+import argparse
 import os
 import glob
 import pandas as pd
@@ -27,13 +28,21 @@ def xml_to_csv(path):
 
 
 def main():
-    for directory in ['train', 'val']:
-        image_path = os.path.join(os.getcwd(), 'images/{}'.format(directory))
-        print(image_path)
-        xml_df = xml_to_csv(image_path)
-        xml_df.to_csv('data/{}_labels.csv'.format(directory), index=None)
+    for d in ['train', 'val']:
+        xml_path = os.path.join(os.getcwd(), 'images', d)
+        print(xml_path)
+        xml_df = xml_to_csv(xml_path)
+        xml_df.to_csv(f'data/{d}_labels.csv', index=False)
         print('Successfully converted xml to csv.')
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='xml file to csv.')
+    parser.add_argument('--model_root_path', type=str,
+                        default=max, required=True,
+                        help='path of new model')
+    args = parser.parse_args()
+
+    os.chdir(args.model_root_path)
+
     main()
